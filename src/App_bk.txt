@@ -1,0 +1,194 @@
+import { useState, useEffect, Fragment, BaseSyntheticEvent, useReducer } from "react";
+import AnchorLink, {
+  LinkChannelSession,
+  TransactArgs,
+  PermissionLevelType,
+  LinkSession,
+} from "@amax/anchor-link";
+
+import { scope, useCases } from "./config";
+import { verifyProof, getLink } from "./utils";
+
+import styles from "./App.module.scss";
+import { initState, reducer } from "./store/global";
+
+function App() {
+  const defaultActionName = "transfer";
+  const [link, setLink] = useState<AnchorLink>();
+  const [signer, setSigner] = useState<PermissionLevel>();
+  const [transactArgs, setTransactArgs] = useState<string>("");
+  const [actionName, setActionName] = useState<string>(defaultActionName);
+  const [error, setError] = useState<any>();
+  const [transaction, setTransaction] = useState<any>();
+  const [state, dispatch]: [StateType, React.Dispatch<{
+    type: string;
+    payload: any;
+  }>] = useReducer(reducer, initState);
+
+
+  useEffect(() => {
+    const link: AnchorLink = getLink();
+
+    link.restoreSession(scope).then(async (session) => {
+      if (session) {
+        console.log('session', session);
+        const { actor, permission } = session.auth;
+        setSigner({
+          actor: actor.toString(),
+          permission: permission.toString(),
+        });
+      }
+    });
+
+    setLink(link);
+  }, []);
+
+  useEffect(() => {
+    if (signer) {
+      link?.restoreSession(scope).then((session) => {
+        // apLink请求退出
+        (session as LinkChannelSession)?.onAppRemoveSession(logout);
+      });
+
+      setTransactArgs(
+        JSON.stringify(
+          useCases[defaultActionName],
+          null,
+          4
+        )
+      );
+    }
+  }, [link, signer]);
+
+  /**
+   *  登录
+   */
+  async function login() {
+    const identity = await link?.login(scope);
+    const { account, proof, proofKey, proofValid } = await verifyProof(
+      link,
+      identity
+    );
+
+    setSigner({
+      actor: proof.signer.actor.toString(),
+      permission: proof.signer.permission.toString(),
+    });
+  }
+
+  /**
+   *  退出登录
+   */
+  async function logout() {
+    setSigner(undefined);
+    link?.clearSessions(scope);
+  }
+
+  async function onSubmit() {
+    if (!signer) {
+      await login();
+    }
+    try {
+      if (link) {
+        const args: TransactArgs = JSON.parse(transactArgs);
+        const session = await link.restoreSession(scope) as LinkChannelSession;
+        window.open(`esr:${session.channelUrl}`)
+        const transaction = await session?.transact(args, { broadcast: true });
+        setTransaction(transaction);
+      }
+    } catch (e) {
+      setError(e);
+      throw e;
+    }
+  }
+
+  function openAPLink() {
+    window.open("esr:")
+  }
+
+  function onChange(e: BaseSyntheticEvent) {
+    setTransactArgs(e.target.value);
+    setError(null);
+  }
+
+  function onChangeAction(name: string) {
+    setTransactArgs(JSON.stringify(useCases[name], null, 4));
+    setActionName(name);
+  }
+
+
+  return (
+    <Fragment>
+      <header className={styles.header}>
+        {signer ? (
+          <div>
+            登录用户：{signer.actor}@{signer.permission}
+          </div>
+        ) : (
+          <div>AMAX</div>
+        )}
+        <div>
+          {signer ? (
+            <button onClick={logout}>退出登录</button>
+          ) : (
+            <button onClick={login}>链接钱包</button>
+          )}
+        </div>
+      </header>
+      {signer ? (
+        <div className={styles.body}>
+          <div className={styles.label}>
+            Actions Case:
+            {Object.keys(useCases).map((name: string) => (
+              <div
+                key={name}
+                className={name === actionName ? styles.active : undefined}
+                onClick={onChangeAction.bind(null, name)}
+              >
+                {name}
+              </div>
+            ))}
+          </div>
+
+          <textarea
+            className={styles.textarea}
+            onChange={onChange}
+            value={transactArgs}
+          />
+          {error && <code className={styles.error}>{error.toString()}</code>}
+          <div className={styles.btnList}>
+            <button onClick={onSubmit}>执行</button>
+            <button onClick={() => {
+              window.open(`esr:http`)
+            }}>Open ESR</button>
+          </div>
+          {transaction && (
+            <div className={styles.success}>
+              Success! Transaction signed by{" "}
+              <span>{transaction.signer.actor.toString()}@
+                {transaction.signer.permission.toString()}</span> and bradcast with
+              transaction id: <a target="_blank" href={`https://testnet.amaxscan.io/transaction/${transaction.transaction.id.toString()}`}>{transaction.transaction.id.toString()}</a>
+            </div>
+          )}
+        </div>
+      ) : (
+        <div data-text="Hello AMAX" onClick={() => {
+
+          dispatch({
+            type: "updateState",
+            payload: {
+              account: {
+                actor: "123123",
+                permission: "",
+              }
+            }
+          })
+        }} className={styles.hello}>
+          Hello AMAX {state.account.actor}
+        </div>
+      )}
+    </Fragment>
+  );
+}
+
+export default App;

@@ -1,0 +1,60 @@
+.header {
+  height: 80px;
+  line-height: 80px;
+  padding: 0 20px;
+  background-color: #1677ff;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 20px;
+    font-weight: bold;
+    &:hover {
+      color: rgba(#fff, 0.8);
+    }
+  }
+}
+
+.modal {
+  width: 100px;
+  height: 100px;
+  box-shadow: 0 0 0 #000;
+  background-color: #ccc;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9;
+}
+
+button {
+  display: block;
+  background-color: #1677ff;
+  border: 1px solid #1677ff;
+  color: #fff;
+  height: 40px;
+  line-height: 40px;
+  padding: 0 20px;
+  cursor: pointer;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+.wallet {
+  padding: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  img {
+    margin-right: 10px;
+  }
+  &:hover {
+    background: #1677ff;
+    color: #fff;
+  }
+}

@@ -1,0 +1,65 @@
+.body {
+  padding: 20px;
+}
+
+.label {
+  margin-bottom: 10px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  > div {
+    margin-left: 10px;
+    background-color: lighten(#1677ff, 20%);
+    color: #fff;
+    padding: 6px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    &:hover,
+    &.active {
+      background-color: lighten(#1677ff, 10%);
+    }
+  }
+}
+
+.textarea {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  width: 100%;
+  padding: 20px;
+  height: 300px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+.error {
+  color: red;
+  margin-top: 10px;
+  display: block;
+  padding: 10px 20px;
+  border: 1px solid red;
+  border-radius: 6px;
+}
+
+.btnList {
+  margin-top: 10px;
+  display: flex;
+  > button {
+    margin-right: 10px;
+  }
+}
+.success {
+  margin-top: 30px;
+  border-radius: 6px;
+  border-color: #ccc;
+  padding: 10px 20px;
+  color: green;
+  border: 1px solid green;
+  span {
+    color: blue;
+  }
+  a {
+    color: #1677ff;
+    text-decoration: underline;
+  }
+}
