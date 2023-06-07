@@ -1,6 +1,7 @@
 # dapp demo
 
 #### 支持 `scatter`与`anchor`钱包连接
+#### 演示链接钱包，转帐，合约操作与查询等。
 
 
 
@@ -9,7 +10,8 @@
 ----
 
 ```
-yarn install
+yarn 
+
 yarn start
 ```
 
