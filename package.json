@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "@amax/amaxjs": "^0.0.13",
+    "@amax/amaxjs-v2": "^22.1.1",
+    "@amax/amaxup": "^1.0.1",
     "@amax/anchor-link": "^3.5.14",
     "@amax/anchor-link-browser-transport": "^3.6.2",
     "@babel/core": "^7.16.0",
@@ -28,6 +30,7 @@
     "case-sensitive-paths-webpack-plugin": "^2.4.0",
     "css-loader": "^6.5.1",
     "css-minimizer-webpack-plugin": "^3.2.0",
+    "default-passive-events": "^2.0.0",
     "dotenv": "^10.0.0",
     "dotenv-expand": "^5.1.0",
     "eosio-signing-request": "^2.5.2",

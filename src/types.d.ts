@@ -1,7 +1,10 @@
 declare interface PermissionLevel {
   actor: string;
-  permission: string;
+  permission: Permission;
+  publicKey?: string;
 }
+
+declare type Permission = "active" | "owner";
 
 declare interface Action {
   account: string; // 合约地址
@@ -18,6 +21,7 @@ declare interface StoreGlobal {
   account?: PermissionLevel;
   wallet?: string;
   selectAction?: Action;
+  armadilloDate: { [key: string]: any };
 }
 
 declare interface WalletListItem {

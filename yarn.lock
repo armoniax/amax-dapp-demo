@@ -40,6 +40,16 @@
     ecurve "^1.0.5"
     randombytes "^2.0.5"
 
+"@amax/amaxjs-v2@^22.1.1":
+  version "22.1.1"
+  resolved "https://registry.yarnpkg.com/@amax/amaxjs-v2/-/amaxjs-v2-22.1.1.tgz#803b4ad6cca3556650fd1ecc1fb16902298d2dde"
+  integrity sha512-Jr45KI2oJRd++UhdAYV5AW76S3wNqBWkGa92P1GFSaXMvaWR49IKToPbdeL2bNxIVLKHpGdn/mtavYxvM6Wi2A==
+  dependencies:
+    bn.js "5.2.0"
+    elliptic "6.5.4"
+    hash.js "1.1.7"
+    pako "2.0.3"
+
 "@amax/amaxjs@^0.0.13":
   version "0.0.13"
   resolved "https://registry.yarnpkg.com/@amax/amaxjs/-/amaxjs-0.0.13.tgz#0ac2d94f6882b470ebf4d1559938931129bdfc2d"
@@ -51,6 +61,13 @@
     binaryen "^37.0.0"
     create-hash "^1.1.3"
     fcbuffer "2.2.2"
+
+"@amax/amaxup@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@amax/amaxup/-/amaxup-1.0.1.tgz#87acb17ec2e2388f83bf7bdf515c4f2163da25d6"
+  integrity sha512-ytReqkwk9cbgf5HdTWytsR65eR/nw7m8zVX0C1TJFKdjci2n9VtA+hVRF8MZBOymkCCCMIU7KVsrag5DJsR5eg==
+  dependencies:
+    tslib "^2.0.3"
 
 "@amax/anchor-link-browser-transport@^3.6.2":
   version "3.6.2"
@@ -3056,6 +3073,11 @@ bluebird@^3.5.5:
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.7.2.tgz#9f229c15be272454ffa973ace0dbee79a1b0c36f"
   integrity sha512-XpNj6GDQzdfW+r2Wnn7xiSAd7TM3jzkxGXBGTtWKuSXv1xUV+azxAm8jdWZN06QTQk+2N2XB9jRDkvbmQmcRtg==
 
+bn.js@5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-5.2.0.tgz#358860674396c6997771a9d051fcc1b57d4ae002"
+  integrity sha512-D7iWRBvnZE8ecXiLj/9wbxH7Tk79fAh8IHaTNq1RWRixsS02W+5qS+iE9yq6RYl0asXx5tw0bLhmT5pIfbSquw==
+
 bn.js@^4.11.8, bn.js@^4.11.9:
   version "4.12.0"
   resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-4.12.0.tgz#775b3f278efbb9718eec7361f483fb36fbbfea88"
@@ -3904,6 +3926,11 @@ default-gateway@^6.0.3:
   dependencies:
     execa "^5.0.0"
 
+default-passive-events@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/default-passive-events/-/default-passive-events-2.0.0.tgz#79b1aa67becbaab38b718469b5480fef92eda649"
+  integrity sha512-eMtt76GpDVngZQ3ocgvRcNCklUMwID1PaNbCNxfpDXuiOXttSh0HzBbda1HU9SIUsDc02vb7g9+3I5tlqe/qMQ==
+
 define-lazy-prop@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/define-lazy-prop/-/define-lazy-prop-2.0.0.tgz#3f7ae421129bcaaac9bc74905c98a0009ec9ee7f"
@@ -4140,7 +4167,7 @@ electron-to-chromium@^1.4.284:
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.333.tgz#ebb21f860f8a29923717b06ec0cb54e77ed34c04"
   integrity sha512-YyE8+GKyGtPEP1/kpvqsdhD6rA/TP1DUFDN4uiU/YI52NzDxmwHkEb3qjId8hLBa5siJvG0sfC3O66501jMruQ==
 
-elliptic@^6.5.4:
+elliptic@6.5.4, elliptic@^6.5.4:
   version "6.5.4"
   resolved "https://registry.yarnpkg.com/elliptic/-/elliptic-6.5.4.tgz#da37cebd31e79a1367e941b592ed1fbebd58abbb"
   integrity sha512-iLhC6ULemrljPZb+QutR5TQGB+pdW6KGD5RSegS+8sorOZT+rdQFbsQFJgvN3eRqNALqJer4oQ16YvJHlU8hzQ==
@@ -5189,7 +5216,7 @@ hash-base@^3.0.0:
     readable-stream "^3.6.0"
     safe-buffer "^5.2.0"
 
-hash.js@^1.0.0, hash.js@^1.0.3:
+hash.js@1.1.7, hash.js@^1.0.0, hash.js@^1.0.3:
   version "1.1.7"
   resolved "https://registry.yarnpkg.com/hash.js/-/hash.js-1.1.7.tgz#0babca538e8d4ee4a0f8988d68866537a003cf42"
   integrity sha512-taOaskGt4z4SOANNseOviYDvjEJinIkRgmp7LbKP2YTTmVxWBl87s/uzK9r+44BclBSp2X7K1hqeNfz9JbBeXA==
@@ -7149,6 +7176,11 @@ p-try@^2.0.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/p-try/-/p-try-2.2.0.tgz#cb2868540e313d61de58fafbe35ce9004d5540e6"
   integrity sha512-R4nPAVTAU0B9D35/Gk3uJf/7XYbQcyohSKdvAxIRSNghFl4e71hVoGnBNQz9cWaXxO2I10KTC+3jMdvvoKw6dQ==
+
+pako@2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/pako/-/pako-2.0.3.tgz#cdf475e31b678565251406de9e759196a0ea7a43"
+  integrity sha512-WjR1hOeg+kki3ZIOjaf4b5WVcay1jaliKSYiEaB1XzwhMQZJxRdQRv0V31EKBYlxb4T7SK3hjfc/jxyU64BoSw==
 
 pako@^2.0.3:
   version "2.1.0"

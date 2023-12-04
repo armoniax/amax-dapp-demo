@@ -20,4 +20,6 @@ declare interface Window {
   scatterAMAX: any;
   tinyBrige: any;
   __LINK__: any;
+  armadillo: any;
+  amaxupClient: any;
 }

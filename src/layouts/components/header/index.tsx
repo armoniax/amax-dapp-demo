@@ -1,36 +1,49 @@
-import { Fragment, memo, useEffect, useState } from "react";
+import { Fragment, memo, useCallback, useEffect, useState } from "react";
 import AnchorLink from "@amax/anchor-link";
 import { useSelector, useDispatch } from 'react-redux'
 import { eventBus } from "@bve/eventbus";
 import Modal from "@/components/modal";
 import styles from "./index.module.scss";
-import { WALLET, scope, walletList } from "@/config";
+import { ArmadilloPermission, WALLET, scope, walletList } from "@/config";
 import { login as anchorLogin, getLink } from "@/utils/anchor";
 import { getScatter, getAccount as scatterLogin } from "@/utils/scatter";
+import { getAccount as armadilloLogin } from "@/utils/armadillo";
 import storage from "@/utils/storage";
 import { Link } from "react-router-dom";
-import { updateState } from "@/store/global";
+import { updateState, updateArmadilloDate } from "@/store/global";
+import { getAmaxupClient } from "@/utils/amaxup";
+import { Account, ServerEventType } from "@amax/amaxup";
 
 
 
 function Header() {
-  const { account } = useSelector<StoreType, StoreGlobal>((state) => state.global);
+  const { account, wallet } = useSelector<StoreType, StoreGlobal>((state) => state.global);
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
 
-
   async function selectWallet(id: string) {
-    let account;
-    if (id === WALLET.ANCHOR) {
-      account = await anchorLogin();
-    } else if (id === WALLET.SCATTER) {
-      account = await scatterLogin();
+    try {
+      let account;
+      if (id === WALLET.ANCHOR) {
+        account = await anchorLogin();
+      } else if (id === WALLET.SCATTER) {
+        account = await scatterLogin();
+      } else if (id === WALLET.ARMADILLO) {
+        account = await armadilloLogin()
+      }
+      if (account) {
+        storage.set('wallet', id);
+        storage.set('account', account);
+        dispatch(updateState({ account, wallet: id }));
+      }
+      setVisible(false);
+    } catch (e) {
+      throw e
+    } finally {
+
     }
-    storage.set('wallet', id);
-    storage.set('account', account);
-    dispatch(updateState({ account, wallet: id }));
-    setVisible(false);
   }
+
 
   useEffect(() => {
     const wallet = storage.get("wallet", undefined);
@@ -43,7 +56,7 @@ function Header() {
          * scatter插件加载完成会触发scatterLoaded
          */
         document.addEventListener('scatterLoaded', () => {
-          selectWallet(wallet);
+          selectWallet(WALLET.SCATTER);
         });
       } else if (wallet === WALLET.ANCHOR) {
         const link: AnchorLink = getLink();
@@ -58,8 +71,28 @@ function Header() {
             }));
           }
         });
+      } else if (wallet === WALLET.ARMADILLO) {
+        document.addEventListener('armoniaxLoaded', () => {
+          selectWallet(WALLET.ARMADILLO);
+        });
       }
     }
+    const client = getAmaxupClient();
+    client.on(ServerEventType.LOGIN, (account: Account) => {
+      storage.set('wallet', WALLET.AMAXUP);
+      storage.set('account', {
+        actor: account.name,
+        permission: account.permission,
+      });
+      dispatch(updateState({
+        account: {
+          actor: account.name,
+          permission: account.permission,
+        },
+        wallet: WALLET.AMAXUP
+      }));
+
+    })
 
     eventBus.on('login', () => {
       setVisible(true);
@@ -75,6 +108,30 @@ function Header() {
     }
   }, [])
 
+  useEffect(() => {
+    if (wallet === WALLET.ARMADILLO) {
+      window.armadillo.on('networkChanged', (network: any) => {
+        dispatch(updateArmadilloDate({ network }))
+      })
+      window.armadillo.on('accountsChanged', (accounts: any) => {
+        dispatch(updateArmadilloDate({ accounts }))
+        const account = storage.get('account');
+        if (accounts.length) {
+          const _account = {
+            actor: accounts[0].account,
+            permission: account ? account.permission : ArmadilloPermission,
+          }
+          dispatch(updateState({
+            account: _account
+          }));
+          storage.set('account', _account);
+        } else {
+          console.error('帐号未激活');
+        }
+      })
+    }
+  }, [wallet])
+
   function logout() {
     const wallet = storage.get('wallet');
     if (wallet === WALLET.SCATTER) {
@@ -83,10 +140,14 @@ function Header() {
     } else if (wallet === WALLET.ANCHOR) {
       const link = getLink();
       link.clearSessions(scope);
+    } else if (wallet === WALLET.ARMADILLO) {
+      window.armadillo.removeListener('networkChanged');
+      window.armadillo.removeListener('accountsChanged');
     }
     storage.remove('wallet');
     storage.remove('account');
     dispatch(updateState({ account: undefined, wallet: undefined }));
+
   }
 
 
@@ -101,7 +162,7 @@ function Header() {
         ) : (
           <div>AMAX</div>
         )}
-        <div><Link to='/'>Home</Link><Link to='/search'>Search</Link></div>
+        <div><Link to='/'>Home</Link><Link to='/rpc'>RPC</Link><Link to='/iframe'>iframe</Link></div>
         <div>
           {account ? (
             <button onClick={logout}>Logout</button>

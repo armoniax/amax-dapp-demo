@@ -109,7 +109,7 @@ export async function login(): Promise<PermissionLevel> {
     const { proof } = await verifyProof(link, identity);
     await onAppRemoveSession();
     const actor = proof.signer.actor.toString();
-    const permission = proof.signer.permission.toString();
+    const permission = proof.signer.permission.toString() as Permission;
     return {
       actor,
       permission,

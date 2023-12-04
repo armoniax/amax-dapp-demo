@@ -6,6 +6,7 @@ export const counterSlice = createSlice({
     account: undefined,
     wallet: undefined,
     selectAction: undefined,
+    armadilloDate: {},
   },
   reducers: {
     updateState: (state, action) => {
@@ -14,9 +15,16 @@ export const counterSlice = createSlice({
         ...action.payload,
       };
     },
+    updateArmadilloDate: (state, action) => {
+      state.armadilloDate = {
+        ...state.armadilloDate,
+        ...action.payload,
+      };
+      return state;
+    },
   },
 });
 
-export const { updateState } = counterSlice.actions;
+export const { updateState, updateArmadilloDate } = counterSlice.actions;
 
 export default counterSlice.reducer;

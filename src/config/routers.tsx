@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import Home from "@/pages/home";
-import Search from "@/pages/search";
+import RPC from "@/pages/rpc";
+import Iframe from "@/pages/iframe";
 import Layouts from "@/layouts";
 
 export default createBrowserRouter([
@@ -13,8 +14,12 @@ export default createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/search",
-        element: <Search />,
+        path: "/rpc",
+        element: <RPC />,
+      },
+      {
+        path: "/iframe",
+        element: <Iframe />,
       },
     ]
   },
