@@ -54,6 +54,7 @@ function RPC() {
         const client = new Client();
         // @ts-ignore
         const data = await client.rpc[key](...JSON.parse(params))
+
         setResponse(data);
       } else {
         const rpc = getRPC();

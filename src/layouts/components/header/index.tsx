@@ -162,7 +162,7 @@ function Header() {
         ) : (
           <div>AMAX</div>
         )}
-        <div><Link to='/'>Home</Link><Link to='/rpc'>RPC</Link><Link to='/iframe'>iframe</Link></div>
+        <div><Link to='/'>Home</Link><Link to='/rpc'>RPC</Link></div>
         <div>
           {account ? (
             <button onClick={logout}>Logout</button>
