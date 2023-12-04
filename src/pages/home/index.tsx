@@ -20,6 +20,7 @@ function Home() {
   const [transactionId, setTransactionId] = useState("");
   const [signature, setSignature] = useState("");
   const [permission, setPermission] = useState<Permission>(ArmadilloPermission);
+  const client = new Client();
 
   function onChange(e: any) {
     try {
@@ -88,26 +89,17 @@ function Home() {
     setSignature(msg);
   }
 
+  // 必须要在AMAXUP中访问才可以用@amax/amaxup钱包
   async function amaxupSignMessage() {
-    const client = new Client();
-    const msg = await client.signMessage(
-      "这里是签名内容！" + new Date()
-    );
-    setSignature(msg);
+    if (client.isInIframe()) {
+      const msg = await client.signMessage(
+        "这里是签名内容！" + new Date()
+      );
+      setSignature(msg);
+    }
   }
 
-  async function testRpc() {
-    const data = await window.armadillo.request({
-      method: "rpc",
-      params: {
-        request: {
-          method: "get_account",
-          params: ["testuser1111"],
-        },
-      },
-    });
-    console.log("data", data);
-  }
+
 
   async function testTransact() {
     const transaction = await window.armadillo.transact({
@@ -216,7 +208,7 @@ function Home() {
           </>
         ) : null}
         {
-          window.parent ? <button onClick={amaxupSignMessage}>amaxup signMessage</button> : null
+          client.isInIframe() ? <button onClick={amaxupSignMessage}>amaxup signMessage</button> : null
         }
         {wallet === WALLET.ANCHOR ? (
           <button
@@ -227,8 +219,6 @@ function Home() {
             open ESR schema
           </button>
         ) : null}
-
-        <button onClick={testRpc}>rpc</button>
         <button onClick={testTransact}>transact</button>
       </div>
       {transactionId && (

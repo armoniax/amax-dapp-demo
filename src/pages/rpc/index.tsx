@@ -27,14 +27,11 @@ function RPC() {
     }
   }
 
-
-
   async function onSubmit() {
     try {
-      // const client = getLocalClient();
-      // const { rows } = await client.getTableRows(params);
-      // setResponse(rows);
+      // 透传，用armadillo钱包节点请求
       if (wallet === 'armadillo') {
+        // 第一种方案
         // const data = await window.armadillo.request({
         //   method: 'rpc',  // 表明是rpc请求
         //   params: {
@@ -45,11 +42,11 @@ function RPC() {
         //   }
         // });
 
-
+        //  第二种方案
         const data = await window.armadillo.rpc[key](...JSON.parse(params))
         setResponse(data);
 
-
+        // 透传，用AMAXUP web所选择的钱包节点请求
       } else if (wallet === 'amaxup') {
         const client = new Client();
         // @ts-ignore
@@ -57,6 +54,7 @@ function RPC() {
 
         setResponse(data);
       } else {
+        // 本地节点来请求
         const rpc = getRPC();
         // @ts-ignore
         const data = await rpc[key](...JSON.parse(params));
