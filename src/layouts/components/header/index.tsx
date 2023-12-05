@@ -78,20 +78,23 @@ function Header() {
       }
     }
     const client = getAmaxupClient();
-    client.on(ServerEventType.LOGIN, (account: Account) => {
-      storage.set('wallet', WALLET.AMAXUP);
-      storage.set('account', {
-        actor: account.name,
-        permission: account.permission,
-      });
-      dispatch(updateState({
-        account: {
+    client.on(ServerEventType.ACCOUNTS_CHANGED, (accounts: Account[]) => {
+      console.log('accounts', accounts);
+      if (accounts.length) {
+        const account = accounts[0]
+        storage.set('wallet', WALLET.AMAXUP);
+        storage.set('account', {
           actor: account.name,
           permission: account.permission,
-        },
-        wallet: WALLET.AMAXUP
-      }));
-
+        });
+        dispatch(updateState({
+          account: {
+            actor: account.name,
+            permission: account.permission,
+          },
+          wallet: WALLET.AMAXUP
+        }));
+      }
     })
 
     eventBus.on('login', () => {
