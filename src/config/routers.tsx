@@ -1,7 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import Home from "@/pages/home";
 import RPC from "@/pages/rpc";
-import Iframe from "@/pages/iframe";
 import Layouts from "@/layouts";
 
 export default createBrowserRouter([
@@ -16,10 +15,6 @@ export default createBrowserRouter([
       {
         path: "/rpc",
         element: <RPC />,
-      },
-      {
-        path: "/iframe",
-        element: <Iframe />,
       },
     ]
   },

@@ -6,7 +6,6 @@ import Modal from "@/components/modal";
 import styles from "./index.module.scss";
 import { ArmadilloPermission, WALLET, scope, walletList } from "@/config";
 import { login as anchorLogin, getLink } from "@/utils/anchor";
-import { getScatter, getAccount as scatterLogin } from "@/utils/scatter";
 import { getAccount as armadilloLogin } from "@/utils/armadillo";
 import storage from "@/utils/storage";
 import { Link } from "react-router-dom";
@@ -26,8 +25,6 @@ function Header() {
       let account;
       if (id === WALLET.ANCHOR) {
         account = await anchorLogin();
-      } else if (id === WALLET.SCATTER) {
-        account = await scatterLogin();
       } else if (id === WALLET.ARMADILLO) {
         account = await armadilloLogin()
       }
@@ -51,14 +48,7 @@ function Header() {
      * 刷新页面后，重新获取登录帐户
      */
     if (wallet) {
-      if (wallet === WALLET.SCATTER) {
-        /**
-         * scatter插件加载完成会触发scatterLoaded
-         */
-        document.addEventListener('scatterLoaded', () => {
-          selectWallet(WALLET.SCATTER);
-        });
-      } else if (wallet === WALLET.ANCHOR) {
+      if (wallet === WALLET.ANCHOR) {
         const link: AnchorLink = getLink();
         link.restoreSession(scope).then(async (session) => {
           if (session) {
@@ -137,10 +127,7 @@ function Header() {
 
   function logout() {
     const wallet = storage.get('wallet');
-    if (wallet === WALLET.SCATTER) {
-      const scatter = getScatter();
-      scatter.forgetIdentity();
-    } else if (wallet === WALLET.ANCHOR) {
+    if (wallet === WALLET.ANCHOR) {
       const link = getLink();
       link.clearSessions(scope);
     } else if (wallet === WALLET.ARMADILLO) {

@@ -139,6 +139,8 @@ function Home() {
 
     dispatch(updateArmadilloDate({ network }));
   }
+
+
   return (
     <div className={styles.body}>
       <div className={styles.label}>

@@ -44,3 +44,8 @@ declare interface GetTableRowsParams {
   show_payer?: boolean; //显示 RAM 付款人
   json?: boolean; // 返回数据格式
 }
+declare interface Asset {
+  amount: number | string;
+  symbol: string;
+  precision: number;
+}

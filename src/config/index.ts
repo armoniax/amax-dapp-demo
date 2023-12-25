@@ -1,5 +1,5 @@
-import scatter from "../assets/aplink.svg";
-import anchor from "../assets/anchor.svg";
+import aplink from "../assets/aplink.svg";
+import armadillo from "../assets/armadillo.svg";
 import { JsSignatureProvider } from "@amax/amaxjs-v2/dist/eosjs-jssig";
 import { getRPC } from "@/utils/armadillo";
 import { Api } from "@amax/amaxjs-v2";
@@ -111,18 +111,13 @@ export const actions: { [key: string]: Action | Action[] } = {
 
 export const walletList: WalletListItem[] = [
   {
-    title: "Scatter",
-    icon: scatter,
-    id: WALLET.SCATTER,
-  },
-  {
     title: "APLink",
-    icon: anchor,
+    icon: aplink,
     id: WALLET.ANCHOR,
   },
   {
     title: "Armadillo",
-    icon: anchor,
+    icon: armadillo,
     id: WALLET.ARMADILLO,
   },
 ];

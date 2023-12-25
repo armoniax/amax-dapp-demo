@@ -1,2 +1,11 @@
 .content {
 }
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  a {
+    margin: 0 10px;
+  }
+}

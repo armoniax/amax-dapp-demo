@@ -2,7 +2,6 @@ import { AnyAction } from "@amax/anchor-link";
 import { Action as ActionType } from "@amax/amaxjs-v2/dist/eosjs-serialize";
 import { WALLET, broadcast, scope } from "../config";
 import { getLink } from "./anchor";
-import { getClient } from "./scatter";
 import { getClient as getArmadilloClient } from "./armadillo";
 import storage from "./storage";
 import { getAmaxupClient } from "./amaxup";
@@ -23,8 +22,6 @@ export async function transact(actions: Action[]) {
   try {
     if (wallet === WALLET.ANCHOR) {
       return await anchor(actions);
-    } else if (wallet === WALLET.SCATTER) {
-      return await scatter(actions);
     } else if (wallet === WALLET.ARMADILLO) {
       return await armadillo(actions);
     } else if (wallet === WALLET.AMAXUP) {
@@ -63,16 +60,6 @@ function addAuthorization(actions: Action[]): Action[] {
     }
   }
   return actions;
-}
-
-/**
- * Scatter发起交易
- * @param actions
- * @returns
- */
-async function scatter(actions: Action[]) {
-  const client = await getClient();
-  return await client.transaction({ actions });
 }
 
 /**
