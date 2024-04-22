@@ -56,4 +56,4 @@ webpack5+
 
 ## 相关文档
 ---
-https://showdoc.nftone.life/web/#/page/edit/9/47
+https://showdoc.amax.network/web/#/35/189
